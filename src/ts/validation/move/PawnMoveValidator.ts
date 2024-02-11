@@ -1,39 +1,32 @@
 
 import { Piece, PiecePosition } from "../../model/Piece";
 import { MoveValidation } from "../utils/MoveValidation";
-import { PieceValidatorAbstract } from "./base/PieceValidatorAbstract";
-import { PieceValidatorInterface } from "./base/PieceValidatorInterface";
+import { TakeValidation } from "../utils/TakeValidation";
+import { MoveValidatorAbstract } from "./base/MoveValidatorAbstract";
+import { MoveValidatorInterface } from "./base/MoveValidatorInterface";
 
-export class PawnMoveValidator extends PieceValidatorAbstract implements PieceValidatorInterface {
-    canMove(pawn: Piece, from: PiecePosition, to: PiecePosition): boolean {
-        if(!MoveValidation.validateForwardMove(pawn, from, to)) {
+export class PawnMoveValidator extends MoveValidatorAbstract implements MoveValidatorInterface {
+    canMove(piece: Piece, from: PiecePosition, to: PiecePosition): boolean {
+        if(TakeValidation.isTaking(this.board, to)) {
+            return MoveValidation.validatePawnTakeMove(from, to);
+        }
+
+        if(!MoveValidation.validateForwardMove(piece, from, to)) {
             return false;
         }
 
-        if(MoveValidation.isTaking(this.board, pawn, from, to)) {
-            return MoveValidation.validatePawnTaking(pawn, from, to);
-        } else {
-            return this.validateMove(pawn, from, to);
-        }
-    }
-
-    
-
-    validateMove(pawn: Piece, from: PiecePosition, to: PiecePosition): boolean {
-        if(!MoveValidation.validateFileLine(pawn, from, to)) {
+        if(!MoveValidation.validateFileLine(piece, from, to)) {
             return false;
         }
 
-        const maxMoveDistance = pawn.wasMoved ? 1 : 2;
-
-        if(!MoveValidation.validateDistance(pawn, from, to, maxMoveDistance)) {
+        if(!MoveValidation.validateMaxDistance(piece, from, to, piece.wasMoved ? 1 : 2)) {
             return false;
         }
 
-        if(MoveValidation.validateFreePath(this.board, from, to)) {
+        if(!MoveValidation.validateFreePath(this.board, from, to)) {
             return false;
         }
-
+            
         return true;
     }
 }

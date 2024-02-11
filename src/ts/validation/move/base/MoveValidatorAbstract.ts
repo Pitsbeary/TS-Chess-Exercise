@@ -1,9 +1,9 @@
 
 import { Board } from "../../../model/Board";
 import { Piece, PiecePosition } from "../../../model/Piece";
-import { PieceValidatorInterface } from "./PieceValidatorInterface";
+import { MoveValidatorInterface } from "./MoveValidatorInterface";
 
-export abstract class PieceValidatorAbstract implements PieceValidatorInterface {
+export abstract class MoveValidatorAbstract implements MoveValidatorInterface {
     constructor(protected readonly board: Board) {
         this.board = board;
     }
