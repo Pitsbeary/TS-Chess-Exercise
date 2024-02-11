@@ -9,18 +9,32 @@
 
     display: grid;
 
-    grid-template-columns: 0.2fr 2fr 1fr; 
-    grid-template-rows: 0.2fr 2fr 1fr;
-    
-    .ranks { 
-        grid-area: 2 / 1 / 4 / 2; 
+    grid-template-columns: 0.1fr 2fr;
+    grid-template-rows: 0.1fr 2fr;
+
+    .ranks {
+        grid-area: 2 / 1 / 4 / 2;
     }
 
-    .files { 
+    .files {
         grid-area: 1 / 2 / 2 / 4;
     }
 
-    .board { 
-        grid-area: 2 / 2 / 4 / 4; 
+    .board {
+        grid-area: 2 / 2 / 4 / 4;
+    }
+
+    @media all and (display-mode: fullscreen) {
+        .ranks {
+            display: none;
+        }
+
+        .files {
+            display: none;
+        }
+
+        .board {
+            grid-area: 1 / 1 / 4 / 4;
+        }
     }
 }
