@@ -1,0 +1,12 @@
+.piece {
+    width: 100%;
+    height: auto;
+
+    flex: 1;
+
+    cursor: grab;
+
+    &:active {
+        cursor: grabbing;
+    }
+}

@@ -1,0 +1,23 @@
+.ranks {
+    counter-reset: ranks;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+
+    &__rank {
+        height: 100%;
+        position: relative;
+
+        &:after {
+            counter-increment: ranks;
+            content: counter(ranks);
+
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}

@@ -1,0 +1,22 @@
+.files {
+    counter-reset: files;
+    color: white;
+
+    display: flex;
+
+    &__file {
+        width: 100%;
+        position: relative;
+
+        &:after {
+            counter-increment: files;
+            content: counter(files, lower-alpha);
+
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }  
+}
