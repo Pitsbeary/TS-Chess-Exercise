@@ -1,7 +1,10 @@
-import { PieceColor } from "./Piece";
+import { PlayerConfig } from "./Game";
+import { Piece } from "./Piece";
 
 export class Player {
-    constructor(public color: PieceColor) {
-        this.color = color;
+    public pieces: Piece[] = [];
+
+    constructor(public readonly config: PlayerConfig) {
+        this.config = config;
     }
 }

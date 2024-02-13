@@ -1,4 +1,5 @@
 import { Board, BoardSquare } from "../model/Board";
+import { BoardConfig } from "../model/Game";
 import { PieceColor, PieceType } from "../model/Piece";
 import { BoardSquareFactory } from "./BoardSquareFactory";
 import { PieceFactory } from "./PieceFactory";
@@ -31,14 +32,14 @@ export enum BoardType {
 }
 
 export class BoardFactory {
-    createBoard(type: BoardType): Board {
-        switch(type) {
+    createBoard(config: BoardConfig): Board {
+        switch(config.type) {
             case BoardType.Empty:
                 return this.createBoardModel(BOARD_EMPTY);
             case BoardType.Default:
                 return this.createBoardModel(BOARD_DEFAULT);
             default:
-                throw new Error(`Unknown board type: ${type}`);
+                throw new Error(`Unknown board type: ${config.type}`);
         }
     }
 
