@@ -1,4 +1,4 @@
-import { PieceInvalidMoveEventDetail, PieceValidMoveEventDetail } from "../controller/GameController";
+import { PieceInvalidMoveEventDetail, PieceValidMoveEventDetail } from "../../controller/GameController";
 
 export type PieceMoveOptions = {
     dragSelector: string;

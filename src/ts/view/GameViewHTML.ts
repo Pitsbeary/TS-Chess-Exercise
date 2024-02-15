@@ -2,7 +2,7 @@ import { Board, BoardSquare } from "../model/Board";
 import { Game, Players } from "../model/Game";
 import { Piece } from "../model/Piece";
 import { Player } from "../model/Player";
-import { PieceMove } from "../modules/PieceMove";
+import { PieceMove } from "./modules/PieceMove";
 import { Document } from "../utils/Document";
 import { GameViewInterface } from "./GameViewInterface";
 
