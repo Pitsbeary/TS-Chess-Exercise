@@ -1,16 +1,19 @@
 import { Board, BoardSquare } from "../model/Board";
-import { Game } from "../model/Game";
+import { Game, Players } from "../model/Game";
 import { Piece } from "../model/Piece";
+import { Player } from "../model/Player";
 import { PieceMove } from "../modules/PieceMove";
 import { Document } from "../utils/Document";
 import { GameViewInterface } from "./GameViewInterface";
 
 export type GameViewHTMLConfig = {
+    elementParentId: string;
     elementId: string;
 }
 
 export class GameViewHTML implements GameViewInterface {
-    private element: HTMLElement|null = null
+    private element: HTMLElement|null = null;
+    private elementParent: HTMLElement|null = null;
 
     constructor(public config: GameViewHTMLConfig) {
         this.config = config;
@@ -20,13 +23,15 @@ export class GameViewHTML implements GameViewInterface {
         this.element = document.getElementById(this.config.elementId);
 
         if(!this.element) {
+            console.error('Element not found');
             return;
         }
 
-        this.element.innerHTML = '';
+        this.elementParent = document.getElementById(this.config.elementParentId);
 
-        if(!this.element) {
-            throw new Error('Element not found');
+        if(!this.elementParent) {
+            console.error('Element parent not found');
+            return;
         }
 
         this.element.appendChild(this.createRanks(game.board));
@@ -39,6 +44,10 @@ export class GameViewHTML implements GameViewInterface {
         });
     
         pieceDrag.init();
+
+        for(const playerElement of this.createPlayers(game.players)) {
+            this.elementParent.appendChild(playerElement);
+        }
     }
 
     public createBoard(board: Board): HTMLElement {
@@ -114,5 +123,47 @@ export class GameViewHTML implements GameViewInterface {
         }
 
         return filesElement;
+    }
+
+    public createPlayers(players: Players): HTMLElement[] {
+        const playerElements: HTMLElement[] = [];
+
+        for(const player of players.values()) {
+            playerElements.push(this.createPlayer(player));
+        }
+
+        return playerElements;
+    }
+
+    public createPlayer(player: Player): HTMLElement {
+        const playerElement: HTMLElement = Document.createElement('div', {
+            id: `player`,
+            className: `player player--${player.config.color}`
+        });
+
+        const playerAvatarElement: HTMLImageElement = Document.createElement('img', {
+            className: `player__avatar`
+        }) as HTMLImageElement;
+        playerAvatarElement.src = player.config.avatar ? player.config.avatar : 'https://placehold.co/64x64/png';
+        playerElement.appendChild(playerAvatarElement);
+
+        const playerContentElement: HTMLElement = Document.createElement('span', {
+            className: `player__content`
+        });
+
+        const playerNameElement: HTMLElement = Document.createElement('span', {
+            className: `player__name`
+        });
+        playerNameElement.innerHTML = player.config.name;
+        playerContentElement.appendChild(playerNameElement);
+
+        const playerCaptionElement: HTMLElement = Document.createElement('span', {
+            className: `player__caption`
+        });
+        playerCaptionElement.innerHTML = player.config.caption ?? '...';
+        playerContentElement.appendChild(playerCaptionElement);
+
+        playerElement.appendChild(playerContentElement);
+        return playerElement;
     }
 }

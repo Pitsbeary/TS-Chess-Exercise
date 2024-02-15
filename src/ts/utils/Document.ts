@@ -1,6 +1,6 @@
 export type CreateElementConfig = {
-    id: string|null;
-    className: string|null,
+    id?: string|null;
+    className?: string|null,
 }
 
 export class Document {

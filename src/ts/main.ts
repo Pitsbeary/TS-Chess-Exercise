@@ -14,17 +14,20 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 timer: 600,
                 color: PieceColor.White,
-                name: 'White Player',
+                name: 'White',
+                caption: 'Very good player'
             },
             {
                 timer: 600,
                 color: PieceColor.Black,
-                name: 'Black Player',
+                name: 'Black',
+                caption: 'Very good player'
             },
         ]
     });
     const gameView = new GameViewHTML({
-        elementId: 'game'
+        elementId: 'game',
+        elementParentId: 'main'
     });
 
     const gameController = new GameController(

@@ -20,6 +20,8 @@ export type PlayerConfig = {
     timer: number;
     
     name: string;
+
+    caption?: string;
     avatar?: string;
 }
 
