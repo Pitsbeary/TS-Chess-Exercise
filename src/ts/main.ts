@@ -1,7 +1,7 @@
 import { GameController } from "./controller/GameController";
 import { BoardType } from "./factory/BoardFactory";
 import { Game } from "./model/Game";
-import { PieceColor } from "./model/Piece";
+import { Piece, PieceColor } from "./model/Piece";
 import { GameViewHTML } from "./view/GameViewHTML";
 
 
@@ -15,12 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 timer: 600,
                 color: PieceColor.White,
                 name: 'White',
-                caption: 'Very good player'
+                id: 'white',
+                caption: 'Very good player',
             },
             {
                 timer: 600,
                 color: PieceColor.Black,
                 name: 'Black',
+                id: 'black',
                 caption: 'Very good player'
             },
         ]
@@ -32,7 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const gameController = new GameController(
         gameModel,
-        gameView
+        gameView, {
+            playersOrder: [
+                PieceColor.White,
+                PieceColor.Black
+            ]
+        }
     );
     
     gameController.init();

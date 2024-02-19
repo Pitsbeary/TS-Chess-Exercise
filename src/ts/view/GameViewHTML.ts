@@ -5,6 +5,7 @@ import { Player } from "../model/Player";
 import { PieceMove } from "./modules/PieceMove";
 import { Document } from "../utils/Document";
 import { GameViewInterface } from "./GameViewInterface";
+import { PlayerTimer } from "./modules/PlayerTimer";
 
 export type GameViewHTMLConfig = {
     elementParentId: string;
@@ -48,6 +49,12 @@ export class GameViewHTML implements GameViewInterface {
         for(const playerElement of this.createPlayers(game.players)) {
             this.elementParent.appendChild(playerElement);
         }
+
+        const playerTimers = new PlayerTimer({
+            selector: '.player__timer'
+        });
+
+        playerTimers.init();
     }
 
     public createBoard(board: Board): HTMLElement {
@@ -163,7 +170,15 @@ export class GameViewHTML implements GameViewInterface {
         playerCaptionElement.innerHTML = player.config.caption ?? '...';
         playerContentElement.appendChild(playerCaptionElement);
 
+        const playerTimerElement: HTMLElement = Document.createElement('span', {
+            className: `player__timer`
+        });
+        playerTimerElement.innerHTML = PlayerTimer.prepareTimeValue(player.config.timer);
+        playerTimerElement.id = player.config.id; 
+
         playerElement.appendChild(playerContentElement);
+        playerElement.appendChild(playerTimerElement);
+
         return playerElement;
     }
 }

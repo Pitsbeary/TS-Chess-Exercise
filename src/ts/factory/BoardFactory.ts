@@ -5,14 +5,14 @@ import { BoardSquareFactory } from "./BoardSquareFactory";
 import { PieceFactory } from "./PieceFactory";
 
 export const BOARD_DEFAULT = [
-    [ {type: PieceType.Rook, color: PieceColor.Black}, {type: PieceType.Knight, color: PieceColor.Black}, {type: PieceType.Bishop, color: PieceColor.Black}, {type: PieceType.Queen, color: PieceColor.Black}, {type: PieceType.King, color: PieceColor.Black}, {type: PieceType.Bishop, color: PieceColor.Black}, {type: PieceType.Knight, color: PieceColor.Black}, {type: PieceType.Rook, color: PieceColor.Black} ],
-    [ {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black} ],
-    [ null, null, null, null, null, null, null, null ],
-    [ null, null, null, null, null, null, null, null ],
-    [ null, null, null, null, null, null, null, null ],
-    [ null, null, null, null, null, null, null, null ],
     [ {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White} ],
     [ {type: PieceType.Rook, color: PieceColor.White}, {type: PieceType.Knight, color: PieceColor.White}, {type: PieceType.Bishop, color: PieceColor.White}, {type: PieceType.Queen, color: PieceColor.White}, {type: PieceType.King, color: PieceColor.White}, {type: PieceType.Bishop, color: PieceColor.White}, {type: PieceType.Knight, color: PieceColor.White}, {type: PieceType.Rook, color: PieceColor.White} ],
+    [ null, null, null, null, null, null, null, null ],
+    [ null, null, null, null, null, null, null, null ],
+    [ null, null, null, null, null, null, null, null ],
+    [ null, null, null, null, null, null, null, null ],
+    [ {type: PieceType.Rook, color: PieceColor.Black}, {type: PieceType.Knight, color: PieceColor.Black}, {type: PieceType.Bishop, color: PieceColor.Black}, {type: PieceType.Queen, color: PieceColor.Black}, {type: PieceType.King, color: PieceColor.Black}, {type: PieceType.Bishop, color: PieceColor.Black}, {type: PieceType.Knight, color: PieceColor.Black}, {type: PieceType.Rook, color: PieceColor.Black} ],
+    [ {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black} ],
 ];
 
 export const BOARD_EMPTY = [
