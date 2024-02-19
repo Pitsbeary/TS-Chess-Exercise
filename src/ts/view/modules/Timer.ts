@@ -18,12 +18,12 @@ export type TimerUpdateEventDetail = {
     value: number;
 }
 
-export type PlayerTimerOptions = {
+export type TimerOptions = {
     selector: string;
 }
 
-export class PlayerTimer {
-    constructor(private readonly options: PlayerTimerOptions) 
+export class Timer {
+    constructor(private readonly options: TimerOptions) 
     {
         this.options = options;
     }
@@ -47,7 +47,7 @@ export class PlayerTimer {
             return;
         }
 
-        timerElement.innerHTML = PlayerTimer.prepareTimeValue(data.value);
+        timerElement.innerHTML = Timer.prepareTimeValue(data.value);
     }
 
     public static prepareTimeValue(value: number)

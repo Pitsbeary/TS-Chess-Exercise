@@ -2,10 +2,10 @@ import { Board, BoardSquare } from "../model/Board";
 import { Game, Players } from "../model/Game";
 import { Piece, PieceColor } from "../model/Piece";
 import { Player } from "../model/Player";
-import { PieceMove } from "./modules/PieceMove";
+import { Move } from "./modules/Move";
 import { Document } from "../utils/Document";
 import { GameViewInterface } from "./GameViewInterface";
-import { PlayerTimer } from "./modules/PlayerTimer";
+import { Timer } from "./modules/Timer";
 import { Notation } from "./modules/Notation";
 import { Actions } from "./modules/Actions";
 
@@ -45,7 +45,7 @@ export class GameViewHTML implements GameViewInterface {
         this.element.appendChild(this.createFiles(game.board));
         this.element.appendChild(this.createBoard(game.board));
 
-        const pieceDrag = new PieceMove({
+        const pieceDrag = new Move({
             dragSelector: '.piece',
             dropSelector: '.square'
         });
@@ -56,7 +56,7 @@ export class GameViewHTML implements GameViewInterface {
             this.elementParent.appendChild(playerElement);
         }
 
-        const playerTimers = new PlayerTimer({
+        const playerTimers = new Timer({
             selector: '.player__timer'
         });
 
@@ -198,7 +198,7 @@ export class GameViewHTML implements GameViewInterface {
         const playerTimerElement: HTMLElement = Document.createElement('span', {
             className: `player__timer`
         });
-        playerTimerElement.innerHTML = PlayerTimer.prepareTimeValue(player.config.timer);
+        playerTimerElement.innerHTML = Timer.prepareTimeValue(player.config.timer);
         playerTimerElement.id = player.config.id; 
 
         playerElement.appendChild(playerContentElement);

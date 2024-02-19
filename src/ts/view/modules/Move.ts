@@ -1,15 +1,15 @@
 import { PieceInvalidMoveEventDetail, PieceValidMoveEventDetail } from "../../controller/GameController";
 
-export type PieceMoveOptions = {
+export type MoveOptions = {
     dragSelector: string;
     dropSelector: string;
 }
 
-export class PieceMove {
+export class Move {
     private draggedElement: HTMLElement|null = null;
     private draggedElementParent: HTMLElement|null = null;
 
-    constructor(private readonly options: PieceMoveOptions) 
+    constructor(private readonly options: MoveOptions) 
     {
         this.options = options;
     }
