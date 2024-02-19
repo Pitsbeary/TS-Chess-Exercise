@@ -17,29 +17,23 @@ export type PieceValidMoveEventDetail = PieceMovedEventDetail & {
 
 export type PieceInvalidMoveEventDetail = PieceMovedEventDetail;
 
-export type GameConfig = {
-    playersOrder: PieceColor[];
-}
-
 export type PlayerTimers = Map<PieceColor, Timer>;
 
 export class GameController {
     private playerCurrent: PieceColor = PieceColor.White;
     private playerTimers: PlayerTimers = new Map<PieceColor, Timer>();
 
-    constructor(public gameModel: Game, public gameView: GameViewInterface, public readonly options: GameConfig) 
+    constructor(public game: Game, public gameView: GameViewInterface) 
     {
-        this.gameModel = gameModel;
+        this.game = game;
         this.gameView = gameView;
-
-        this.options = options;
     }
 
     init() 
     {
-        this.setCurrentPlayer(this.options.playersOrder[0]);
+        this.setCurrentPlayer(this.game.config.playersOrder[0]);
 
-        this.gameModel.players.forEach((player: Player) => {
+        this.game.players.forEach((player: Player) => {
             const playerColor = player.config.color;
 
             this.playerTimers?.set(playerColor, new Timer((timer) => {
@@ -54,7 +48,7 @@ export class GameController {
             }));
         });
 
-        this.gameView.init(this.gameModel);
+        this.gameView.init(this.game);
 
         document.addEventListener('PieceDropped', (e) => {
             this.onPieceMoved((e as CustomEvent).detail);
@@ -63,7 +57,7 @@ export class GameController {
     
     onPieceMoved(detail: PieceMovedEventDetail) 
     {
-        const isTaking = TakeValidation.isTaking(this.gameModel.board, detail.to);
+        const isTaking = TakeValidation.isTaking(this.game.board, detail.to);
         const canMove = isTaking ? this.validatePieceMove(detail) && this.validatePieceTaking(detail) : this.validatePieceMove(detail);
 
         if(!canMove) {
@@ -75,7 +69,7 @@ export class GameController {
 
     validatePieceMove(detail: PieceMovedEventDetail): boolean 
     {
-        const movedPiece: Piece|null = this.gameModel.board.squares[detail.from.rankIndex][detail.from.fileIndex].piece;
+        const movedPiece: Piece|null = this.game.board.squares[detail.from.rankIndex][detail.from.fileIndex].piece;
 
         if(!movedPiece) {
             return false;
@@ -85,19 +79,19 @@ export class GameController {
             return false;
         }
 
-        return movedPiece.getMoveValidator(this.gameModel.board).canMove(movedPiece, detail.from, detail.to);
+        return movedPiece.getMoveValidator(this.game.board).canMove(movedPiece, detail.from, detail.to);
     }
 
     validatePieceTaking(detail: PieceMovedEventDetail): boolean  
     {
-        const movedPiece: Piece|null = this.gameModel.board.squares[detail.from.rankIndex][detail.from.fileIndex].piece;
-        const takenPiece: Piece|null = this.gameModel.board.squares[detail.to.rankIndex][detail.to.fileIndex].piece;    
+        const movedPiece: Piece|null = this.game.board.squares[detail.from.rankIndex][detail.from.fileIndex].piece;
+        const takenPiece: Piece|null = this.game.board.squares[detail.to.rankIndex][detail.to.fileIndex].piece;    
 
         if(!takenPiece || !movedPiece) {
             return false;
         }
 
-        return movedPiece.getTakeValidator(this.gameModel.board).canTake(detail.from, detail.to, movedPiece, takenPiece);
+        return movedPiece.getTakeValidator(this.game.board).canTake(detail.from, detail.to, movedPiece, takenPiece);
     }
 
     onPieceInvalidMove(detail: PieceInvalidMoveEventDetail) 
@@ -114,7 +108,7 @@ export class GameController {
         const event = new CustomEvent('PieceValidMove', {
             detail: {
                 ...detail,
-                takenPieceId: this.gameModel.board.squares[detail.to.rankIndex][detail.to.fileIndex].piece?.id
+                takenPieceId: this.game.board.squares[detail.to.rankIndex][detail.to.fileIndex].piece?.id
             } as PieceValidMoveEventDetail
         });
 
@@ -126,18 +120,18 @@ export class GameController {
 
     movePiece(from: PiecePosition, to: PiecePosition) 
     {
-        this.gameModel.board.squares[to.rankIndex][to.fileIndex].piece = this.gameModel.board.squares[from.rankIndex][from.fileIndex].piece;
-        this.gameModel.board.squares[from.rankIndex][from.fileIndex].piece = null;
+        this.game.board.squares[to.rankIndex][to.fileIndex].piece = this.game.board.squares[from.rankIndex][from.fileIndex].piece;
+        this.game.board.squares[from.rankIndex][from.fileIndex].piece = null;
 
-        if(this.gameModel.board.squares[to.rankIndex][to.fileIndex].piece) {
-            this.gameModel.board.squares[to.rankIndex][to.fileIndex].piece!.wasMoved = true;
+        if(this.game.board.squares[to.rankIndex][to.fileIndex].piece) {
+            this.game.board.squares[to.rankIndex][to.fileIndex].piece!.wasMoved = true;
         }
     }
 
     switchPlayer()
     {
-        const currentPlayer: Player | undefined = this.gameModel.players.get(this.getCurrentPlayer());
-        const nextPlayer: Player | undefined = this.gameModel.players.get(this.getNextPlayer());
+        const currentPlayer: Player | undefined = this.game.players.get(this.getCurrentPlayer());
+        const nextPlayer: Player | undefined = this.game.players.get(this.getNextPlayer());
      
         if(!nextPlayer || !currentPlayer) {
             return;
@@ -161,10 +155,10 @@ export class GameController {
 
     getNextPlayer(): PieceColor 
     {
-        const currentPlayerIndex = this.options.playersOrder.findIndex((value: PieceColor) => {
+        const currentPlayerIndex = this.game.config.playersOrder.findIndex((value: PieceColor) => {
             return value === this.playerCurrent;
         });
 
-        return currentPlayerIndex === (this.options.playersOrder.length - 1) ? this.options.playersOrder[0] : this.options.playersOrder[currentPlayerIndex + 1];
+        return currentPlayerIndex === (this.game.config.playersOrder.length - 1) ? this.game.config.playersOrder[0] : this.game.config.playersOrder[currentPlayerIndex + 1];
     }
 }

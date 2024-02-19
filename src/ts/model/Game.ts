@@ -5,8 +5,11 @@ import { Player } from "./Player";
 import { PlayerFactory } from '../factory/PlayerFactory';
 
 export type GameConfig = {
+    playersConfig: PlayersConfig;
+    playersOrder: PieceColor[];
+    playerCurrent: PieceColor;
+
     board: BoardConfig;
-    players: PlayersConfig; 
 }
 
 export type BoardConfig = {
@@ -32,25 +35,27 @@ export class Game {
     public board: Board
     public players: Players;
 
-    constructor(config: GameConfig) {
-        const board = this.createBoard(config.board);
+    constructor(public readonly config: GameConfig) {
+        this.config = config;
+
+        const board = this.createBoard();
 
         this.board = board;
-        this.players = this.createPlayers(config.players, board);
+        this.players = this.createPlayers(board);
     }
 
-    createBoard(boardConfig: BoardConfig): Board 
+    createBoard(): Board 
     {
         const boardFactory = new BoardFactory();
-        return boardFactory.createBoard(boardConfig);
+        return boardFactory.createBoard(this.config);
     }
 
-    createPlayers(playersConfig: PlayersConfig, board: Board): Players
+    createPlayers(board: Board): Players
     {
         const players: Players = new Map<PieceColor, Player>();
         const playerFactory = new PlayerFactory();
 
-        playersConfig.forEach((playerConfig) => {
+        this.config.playersConfig.forEach((playerConfig) => {
             players.set(playerConfig.color, playerFactory.createPlayer(playerConfig, board));
         });
 

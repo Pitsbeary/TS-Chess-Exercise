@@ -10,7 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
         board: {
             type: BoardType.Default
         },
-        players: [
+        playerCurrent: PieceColor.White,
+        playersOrder: [
+            PieceColor.White,
+            PieceColor.Black
+        ],
+        playersConfig: [
             {
                 timer: 600,
                 color: PieceColor.White,
@@ -34,12 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const gameController = new GameController(
         gameModel,
-        gameView, {
-            playersOrder: [
-                PieceColor.White,
-                PieceColor.Black
-            ]
-        }
+        gameView,
     );
     
     gameController.init();

@@ -1,18 +1,18 @@
 import { Board, BoardSquare } from "../model/Board";
-import { BoardConfig } from "../model/Game";
+import { GameConfig } from "../model/Game";
 import { PieceColor, PieceType } from "../model/Piece";
 import { BoardSquareFactory } from "./BoardSquareFactory";
 import { PieceFactory } from "./PieceFactory";
 
 export const BOARD_DEFAULT = [
-    [ {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White} ],
-    [ {type: PieceType.Rook, color: PieceColor.White}, {type: PieceType.Knight, color: PieceColor.White}, {type: PieceType.Bishop, color: PieceColor.White}, {type: PieceType.Queen, color: PieceColor.White}, {type: PieceType.King, color: PieceColor.White}, {type: PieceType.Bishop, color: PieceColor.White}, {type: PieceType.Knight, color: PieceColor.White}, {type: PieceType.Rook, color: PieceColor.White} ],
-    [ null, null, null, null, null, null, null, null ],
-    [ null, null, null, null, null, null, null, null ],
-    [ null, null, null, null, null, null, null, null ],
-    [ null, null, null, null, null, null, null, null ],
     [ {type: PieceType.Rook, color: PieceColor.Black}, {type: PieceType.Knight, color: PieceColor.Black}, {type: PieceType.Bishop, color: PieceColor.Black}, {type: PieceType.Queen, color: PieceColor.Black}, {type: PieceType.King, color: PieceColor.Black}, {type: PieceType.Bishop, color: PieceColor.Black}, {type: PieceType.Knight, color: PieceColor.Black}, {type: PieceType.Rook, color: PieceColor.Black} ],
     [ {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black}, {type: PieceType.Pawn, color: PieceColor.Black} ],
+    [ null, null, null, null, null, null, null, null ],
+    [ null, null, null, null, null, null, null, null ],
+    [ null, null, null, null, null, null, null, null ],
+    [ null, null, null, null, null, null, null, null ],
+    [ {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White}, {type: PieceType.Pawn, color: PieceColor.White} ],
+    [ {type: PieceType.Rook, color: PieceColor.White}, {type: PieceType.Knight, color: PieceColor.White}, {type: PieceType.Bishop, color: PieceColor.White}, {type: PieceType.Queen, color: PieceColor.White}, {type: PieceType.King, color: PieceColor.White}, {type: PieceType.Bishop, color: PieceColor.White}, {type: PieceType.Knight, color: PieceColor.White}, {type: PieceType.Rook, color: PieceColor.White} ],
 ];
 
 export const BOARD_EMPTY = [
@@ -32,14 +32,14 @@ export enum BoardType {
 }
 
 export class BoardFactory {
-    createBoard(config: BoardConfig): Board {
-        switch(config.type) {
+    createBoard(config: GameConfig): Board {
+        switch(config.board.type) {
             case BoardType.Empty:
                 return this.createBoardModel(BOARD_EMPTY);
             case BoardType.Default:
                 return this.createBoardModel(BOARD_DEFAULT);
             default:
-                throw new Error(`Unknown board type: ${config.type}`);
+                throw new Error(`Unknown board type: ${config.board.type}`);
         }
     }
 

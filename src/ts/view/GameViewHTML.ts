@@ -1,11 +1,13 @@
 import { Board, BoardSquare } from "../model/Board";
 import { Game, Players } from "../model/Game";
-import { Piece } from "../model/Piece";
+import { Piece, PieceColor } from "../model/Piece";
 import { Player } from "../model/Player";
 import { PieceMove } from "./modules/PieceMove";
 import { Document } from "../utils/Document";
 import { GameViewInterface } from "./GameViewInterface";
 import { PlayerTimer } from "./modules/PlayerTimer";
+import { Notation } from "./modules/Notation";
+import { Actions } from "./modules/Actions";
 
 export type GameViewHTMLConfig = {
     elementParentId: string;
@@ -20,7 +22,7 @@ export class GameViewHTML implements GameViewInterface {
         this.config = config;
     }
 
-    public init(game: Game) {
+    public init(game: Game) {        
         this.element = document.getElementById(this.config.elementId);
 
         if(!this.element) {
@@ -34,6 +36,10 @@ export class GameViewHTML implements GameViewInterface {
             console.error('Element parent not found');
             return;
         }
+
+        this.getElementParentClasses(game).forEach((elementClass) => {
+            this.elementParent!.classList.add(elementClass);
+        });        
 
         this.element.appendChild(this.createRanks(game.board));
         this.element.appendChild(this.createFiles(game.board));
@@ -55,6 +61,21 @@ export class GameViewHTML implements GameViewInterface {
         });
 
         playerTimers.init();
+
+        const actions = new Actions({
+            selector: '.btn-action[data-action]'
+        });
+        actions.init();
+    }
+
+    public getElementParentClasses(game: Game): string[] {
+        const classes: string[] = [];
+
+        if(game.config.playerCurrent === PieceColor.Black) {
+            classes.push('reversed');
+        }
+
+        return classes;
     }
 
     public createBoard(board: Board): HTMLElement {
@@ -107,10 +128,12 @@ export class GameViewHTML implements GameViewInterface {
         });
 
         for(let i = 0; i < board.squares.length; i++) {
-            ranksElement.appendChild(Document.createElement('div', {
+            const rankElement = Document.createElement('div', {
                 id: `rank-${i}`,
                 className: `ranks__rank`
-            }));
+            });
+            rankElement.innerHTML = Notation.getRank(i, board.squares.length);
+            ranksElement.appendChild(rankElement);
         }
 
         return ranksElement;
@@ -123,10 +146,12 @@ export class GameViewHTML implements GameViewInterface {
         });
 
         for(let i = 0; i < board.squares.length; i++) {
-            filesElement.appendChild(Document.createElement('div', {
+            const fileElement = Document.createElement('div', {
                 id: `file-${i}`,
                 className: `files__file`
-            }));
+            });
+            fileElement.innerHTML = Notation.getFile(i);
+            filesElement.appendChild(fileElement);
         }
 
         return filesElement;

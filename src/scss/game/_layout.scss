@@ -36,11 +36,47 @@
         }
 
         &--white {
-            grid-area: 1 / 2 / 2 / 3;
+            grid-area: 3 / 2 / 4 / 3;
         }
 
         &--black {
-            grid-area: 3 / 2 / 4 / 3;
+            grid-area: 1 / 2 / 2 / 3;
+        }
+    }
+
+    &.reversed {
+        .player {
+            &--white {
+                grid-area: 1 / 2 / 2 / 3;
+            }
+
+            &--black {
+                grid-area: 3 / 2 / 4 / 3;
+            }
+        }
+
+        .board {
+            transform: rotate(180deg);
+        }
+
+        .piece {
+            transform: rotate(180deg);
+        }
+
+        .ranks {
+            transform: rotate(180deg);
+
+            &__rank {
+                transform: rotate(180deg);
+            }
+        }
+
+        .files {
+            transform: rotate(180deg);
+
+            &__file {
+                transform: rotate(180deg);
+            }
         }
     }
 }
