@@ -11,7 +11,7 @@ export class Timer {
     {
         this.timestamp = new Date().getTime();
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.callback(this);
         });
     }
