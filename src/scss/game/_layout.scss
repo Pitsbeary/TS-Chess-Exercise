@@ -4,6 +4,10 @@
     grid-template-columns: 0.25fr auto 0.25fr;
     grid-template-rows: 0.45fr 4fr 0.45fr;
 
+    .move-history {
+        grid-area: 2 / 3 / 3 / 4;
+    }
+
     #game {
         grid-area: 2 / 2 / 3 / 3;
     }

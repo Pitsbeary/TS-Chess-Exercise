@@ -8,6 +8,7 @@ import { GameViewInterface } from "./GameViewInterface";
 import { Timer } from "./modules/Timer";
 import { Notation } from "./modules/Notation";
 import { Actions } from "./modules/Actions";
+import { History } from "./modules/History";
 
 export type GameViewHTMLConfig = {
     elementParentId: string;
@@ -45,6 +46,8 @@ export class GameViewHTML implements GameViewInterface {
         this.element.appendChild(this.createFiles(game.board));
         this.element.appendChild(this.createBoard(game.board));
 
+        this.elementParent.appendChild(this.createHistory());
+
         const pieceDrag = new Move({
             dragSelector: '.piece',
             dropSelector: '.square'
@@ -56,16 +59,21 @@ export class GameViewHTML implements GameViewInterface {
             this.elementParent.appendChild(playerElement);
         }
 
-        const playerTimers = new Timer({
+        const timers = new Timer({
             selector: '.player__timer'
         });
 
-        playerTimers.init();
+        timers.init();
 
         const actions = new Actions({
             selector: '.btn-action[data-action]'
         });
         actions.init();
+
+        const history = new History({
+            selector: '.move-history'
+        });
+        history.init();
     }
 
     public getElementParentClasses(game: Game): string[] {
@@ -205,5 +213,13 @@ export class GameViewHTML implements GameViewInterface {
         playerElement.appendChild(playerTimerElement);
 
         return playerElement;
+    }
+
+    public createHistory(): HTMLElement {
+        const historyElement = Document.createElement('div', {
+            className: `move-history`
+        });
+        
+        return historyElement;
     }
 }

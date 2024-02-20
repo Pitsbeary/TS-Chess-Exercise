@@ -1,4 +1,5 @@
 import { Game } from "../model/Game";
+import { PieceMove, PieceMoveHistory } from "../model/History";
 import { Piece, PieceColor, PiecePosition } from "../model/Piece";
 import { Player } from "../model/Player";
 import { TakeValidation } from "../validation/utils/TakeValidation";
@@ -23,10 +24,14 @@ export class GameController {
     private playerCurrent: PieceColor = PieceColor.White;
     private playerTimers: PlayerTimers = new Map<PieceColor, Timer>();
 
+    private moveHistory: PieceMoveHistory;
+
     constructor(public game: Game, public gameView: GameViewInterface) 
     {
         this.game = game;
         this.gameView = gameView;
+
+        this.moveHistory = new PieceMoveHistory();
     }
 
     init() 
@@ -105,10 +110,13 @@ export class GameController {
 
     onPieceValidMove(detail: PieceValidMoveEventDetail) 
     {
+        const movedPiece: Piece = this.game.board.squares[detail.from.rankIndex][detail.from.fileIndex].piece!;
+        const takenPiece: Piece | null = this.game.board.squares[detail.to.rankIndex][detail.to.fileIndex].piece;
+
         const event = new CustomEvent('PieceValidMove', {
             detail: {
                 ...detail,
-                takenPieceId: this.game.board.squares[detail.to.rankIndex][detail.to.fileIndex].piece?.id
+                takenPieceId: takenPiece ? takenPiece.id : null
             } as PieceValidMoveEventDetail
         });
 
@@ -116,6 +124,13 @@ export class GameController {
 
         this.movePiece(detail.from, detail.to);
         this.switchPlayer();
+
+        this.addMoveToHistory({
+            from: detail.from,
+            to: detail.to,
+            piece: movedPiece,
+            isTaking: !!takenPiece
+        });
     }
 
     movePiece(from: PiecePosition, to: PiecePosition) 
@@ -160,5 +175,14 @@ export class GameController {
         });
 
         return currentPlayerIndex === (this.game.config.playersOrder.length - 1) ? this.game.config.playersOrder[0] : this.game.config.playersOrder[currentPlayerIndex + 1];
+    }
+
+    addMoveToHistory(pieceMove: PieceMove)
+    {
+        this.moveHistory.addMove(pieceMove);
+
+        document.dispatchEvent(new CustomEvent('PieceMoveHistory.MoveAdded', {
+            detail: pieceMove
+        }));
     }
 }
