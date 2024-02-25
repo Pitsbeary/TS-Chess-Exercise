@@ -1,4 +1,6 @@
+import { PieceMove } from './../../model/History';
 import { Board } from "../../model/Board";
+import { MoveHistory } from "../../model/History";
 import { Piece, PieceColor, PiecePosition } from "../../model/Piece";
 
 export class MoveValidation {
@@ -13,7 +15,6 @@ export class MoveValidation {
 
     static validateDiagonalLine(piece: Piece, from: PiecePosition, to: PiecePosition): boolean
     {
-        console.log(Math.abs(to.fileIndex - from.fileIndex), Math.abs(to.rankIndex - from.rankIndex))
         return Math.abs(to.fileIndex - from.fileIndex) === Math.abs(to.rankIndex - from.rankIndex);
     }
     
@@ -28,7 +29,7 @@ export class MoveValidation {
     }
 
     static validateMaxDistance(piece: Piece, from: PiecePosition, to: PiecePosition, distance: number): boolean {
-        return Math.abs(from.rankIndex - to.rankIndex) <= distance;
+        return Math.abs(from.rankIndex - to.rankIndex) <= distance && Math.abs(from.fileIndex - to.fileIndex) <= distance;
     }
 
     static validateForwardMove(piece: Piece, from: PiecePosition, to: PiecePosition): boolean {
@@ -46,18 +47,19 @@ export class MoveValidation {
     static validateFreePath(board: Board, from: PiecePosition, to: PiecePosition) 
     {
         const fileDirection = Math.sign(to.fileIndex - from.fileIndex);
-        let fileIndex = from.fileIndex;
+        let fileIndex = from.fileIndex + fileDirection;
         
         const rankDirection = Math.sign(to.rankIndex - from.rankIndex);
-        let rankIndex = from.rankIndex;
+        let rankIndex = from.rankIndex + rankDirection;
 
-        while(rankIndex !== (to.rankIndex - rankDirection) || fileIndex !== (to.fileIndex - fileDirection)) {
-            rankIndex += rankDirection;
-            fileIndex += fileDirection;
-
+        while(rankIndex !== to.rankIndex || fileIndex !== to.fileIndex) {
+          
             if(!!board.squares[rankIndex][fileIndex].piece) {
                 return false;
             }
+
+            rankIndex += rankDirection;
+            fileIndex += fileDirection;
         }
 
         return true;
@@ -76,7 +78,19 @@ export class MoveValidation {
         return false;
     }
 
-    static validatePawnTakeMove(from: PiecePosition, to: PiecePosition): boolean {
+    static validatePawnTakeMove(from: PiecePosition, to: PiecePosition, board: Board, history: MoveHistory): boolean {
+        if(MoveValidation.validatePawnEnPassantTake(from, to, board, history)) {
+            return true
+        }
+
+        return MoveValidation.validatePawnNormalTake(from, to);
+    }
+
+    static validatePawnEnPassantTake(from: PiecePosition, to: PiecePosition, board: Board, history: MoveHistory): boolean {
+        return false;
+    }
+
+    static validatePawnNormalTake(from: PiecePosition, to: PiecePosition): boolean {
         return Math.abs(from.rankIndex - to.rankIndex) === 1 && Math.abs(from.fileIndex - to.fileIndex) === 1;
     }
 }

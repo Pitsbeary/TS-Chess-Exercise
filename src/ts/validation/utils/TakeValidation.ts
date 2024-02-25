@@ -11,18 +11,10 @@ export class TakeValidation {
             return false;
         }
 
-        if(!TakeValidation.validateType(takingPiece, takedPiece)) {
-            return false;
-        }
-
         return true;
     }
 
     static validateColor(takingPiece: Piece, takedPiece: Piece) {
         return takingPiece.color !== takedPiece.color;
-    }
-
-    static validateType(takingPiece: Piece, takedPiece: Piece) {
-        return takedPiece.type !== PieceType.King;
     }
 }

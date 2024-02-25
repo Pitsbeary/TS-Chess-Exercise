@@ -1,13 +1,26 @@
 import { Piece, PiecePosition } from "./Piece"
 
+export enum PieceMoveType {
+    Move        = 'move',
+    Capture     = 'capture',
+    Castling    = 'castling',
+    Passant     = 'passant',
+}
+
 export type PieceMove = {
     from: PiecePosition;
     to: PiecePosition;
+    
     piece: Piece;
-    isTaking: boolean;
+    pieceCaptured?: Piece;
+
+    type: PieceMoveType;
+    
+    isCheck: boolean;
+    isCheckMate: boolean;
 }
 
-export class PieceMoveHistory {
+export class MoveHistory {
     private moves: PieceMove[];
 
     constructor()

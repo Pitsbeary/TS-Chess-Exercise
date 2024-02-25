@@ -1,5 +1,5 @@
 import { Board } from "../../model/Board";
-import { PieceMove } from "../../model/History";
+import { PieceMove, PieceMoveType } from "../../model/History";
 import { PieceType } from "../../model/Piece";
 
 const LETTER_INDEX_START = 97;
@@ -18,11 +18,23 @@ export class Notation {
         let moveNotation = pieceMove.piece.type === PieceType.Pawn ? '' 
         : (pieceMove.piece.type === PieceType.Knight ? 'N' : pieceMove.piece.type.charAt(0).toLocaleUpperCase());
 
-        if(pieceMove.isTaking) {
+        if(pieceMove.type === PieceMoveType.Capture) {
             moveNotation += pieceMove.piece.type === PieceType.Pawn ? `${Notation.getFile(pieceMove.from.fileIndex)}` : 'x';
         }
 
         moveNotation += `${Notation.getFile(pieceMove.to.fileIndex)}${Notation.getRank(pieceMove.to.rankIndex, ranksLength)}`;
+
+        if(pieceMove.isCheck) {
+
+            if(pieceMove.isCheckMate) {
+                moveNotation += '++';
+            } else {
+                moveNotation += '+';
+            }
+            
+        }
+
+        
 
         return moveNotation;
     }

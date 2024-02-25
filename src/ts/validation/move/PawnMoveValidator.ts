@@ -8,7 +8,7 @@ import { MoveValidatorInterface } from "./base/MoveValidatorInterface";
 export class PawnMoveValidator extends MoveValidatorAbstract implements MoveValidatorInterface {
     canMove(piece: Piece, from: PiecePosition, to: PiecePosition): boolean {
         if(TakeValidation.isTaking(this.board, to)) {
-            return MoveValidation.validatePawnTakeMove(from, to);
+            return MoveValidation.validatePawnTakeMove(from, to, this.board, this.history);
         }
 
         if(!MoveValidation.validateForwardMove(piece, from, to)) {

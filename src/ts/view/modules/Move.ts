@@ -29,12 +29,10 @@ export class Move {
         }
         
         document.addEventListener('PieceInvalidMove', (e) => {
-            console.log('INVALID MOVE', e);
             this.onPieceInvalidMove((e as CustomEvent).detail);
         });
 
         document.addEventListener('PieceValidMove', (e) => {
-            console.log('VALID MOVE', e);
             this.onPieceValidMove((e as CustomEvent).detail);
         });
     }

@@ -9,6 +9,7 @@ import { QueenMoveValidator } from "../validation/move/QueenMoveValidator";
 import { RookMoveValidator } from "../validation/move/RookMoveValidator";
 import { DefaultTakeValidator } from "../validation/take/DefautTakeValidator";
 import { Board } from "./Board";
+import { MoveHistory } from "./History";
 
 export type PiecePosition = {
     rankIndex: number;
@@ -39,41 +40,41 @@ export class Piece {
         this.color = color;
     }
 
-    getMoveValidator(board: Board): MoveValidatorInterface {
+    getMoveValidator(board: Board, history: MoveHistory): MoveValidatorInterface {
         switch(this.type) {
             case PieceType.Pawn:
-                return new PawnMoveValidator(board);
+                return new PawnMoveValidator(board, history);
             case PieceType.Rook:
-                return new RookMoveValidator(board);
+                return new RookMoveValidator(board, history);
             case PieceType.Knight:
-                return new KnightMoveValidator(board);
+                return new KnightMoveValidator(board, history);
             case PieceType.Bishop:
-                return new BishopMoveValidator(board);
+                return new BishopMoveValidator(board, history);
             case PieceType.Queen:
-                return new QueenMoveValidator(board);
+                return new QueenMoveValidator(board, history);
             case PieceType.King:
-                return new KingMoveValidator(board);
+                return new KingMoveValidator(board, history);
             default:
-                return new DefaultMoveValidator(board);
+                return new DefaultMoveValidator(board, history);
         }
     }
 
-    getTakeValidator(board: Board): TakeValidatorInterface {
+    getTakeValidator(board: Board, history: MoveHistory): TakeValidatorInterface {
         switch(this.type) {
             case PieceType.Pawn:
-                return new DefaultTakeValidator(board);
+                return new DefaultTakeValidator(board, history);
             case PieceType.Rook:
-                return new DefaultTakeValidator(board);
+                return new DefaultTakeValidator(board, history);
             case PieceType.Knight:
-                return new DefaultTakeValidator(board);
+                return new DefaultTakeValidator(board, history);
             case PieceType.Bishop:
-                return new DefaultTakeValidator(board);
+                return new DefaultTakeValidator(board, history);
             case PieceType.Queen:
-                return new DefaultTakeValidator(board);
+                return new DefaultTakeValidator(board, history);
             case PieceType.King:
-                return new DefaultTakeValidator(board);
+                return new DefaultTakeValidator(board, history);
             default:
-                return new DefaultTakeValidator(board);
+                return new DefaultTakeValidator(board, history);
         }
     }
 }

@@ -20,7 +20,7 @@ export class History {
             return;
         }
 
-        document.addEventListener('PieceMoveHistory.MoveAdded', (e) => {
+        document.addEventListener('MoveHistory.MoveAdded', (e) => {
             element.appendChild(this.createMoveElement((e as CustomEvent).detail as PieceMove));
         })
     }
