@@ -15,6 +15,19 @@ export class BoardAnalyzer {
         }).length;
     }
 
+    public static isPlayerInCheckMate(player: Player, board: Board, history: MoveHistory): boolean 
+    {
+        if(!BoardAnalyzer.isPlayerInCheck(player, board, history)) {
+            return false;
+        }
+
+        if(BoardAnalyzer.canPlayerEscapeCheck(player, board, history)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static getChecks(board: Board, history: MoveHistory): PiecePosition[]
     {
         const kingsPositions: PiecePosition[] = [];
@@ -77,19 +90,6 @@ export class BoardAnalyzer {
         });
 
         return result;
-    }
-
-    public static isPlayerInCheckMate(player: Player, board: Board, history: MoveHistory): boolean 
-    {
-        if(!BoardAnalyzer.isPlayerInCheck(player, board, history)) {
-            return false;
-        }
-
-        if(BoardAnalyzer.canPlayerEscapeCheck(player, board, history)) {
-            return false;
-        }
-
-        return true;
     }
 
     public static canPlayerEscapeCheck(player: Player, board: Board, history: MoveHistory): boolean 
